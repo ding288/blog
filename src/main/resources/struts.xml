@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<!-- 开发模式 -->
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value=",do,action,htm,*" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.action.excludePattern" value="/resources,/external" />
+	<constant name="struts.custom.i18n.resources" value="msgs" />
+	<constant name="struts.objectFactory.spring.autoWire" value="name" />
+	<package name="main" extends="struts-default">
+		<action name="main" class="mainAction" method="execute">
+			<result name="main">main.jsp</result>
+		</action>
+		<action name="login" class="com.blog.action.UserAction" method="login">
+			<result name="main" type="redirect">
+				main?username=${username}
+			</result>
+		</action>
+		<action name="logout" class="com.blog.action.UserAction"
+			method="logout">
+			<result name="main">main.jsp</result>
+		</action>
+	</package>
+	<package name="img" extends="struts-default" namespace="img">
+		<action name="upload" class="com.blog.action.ImgUploadAction"
+			method="upload"></action>
+	</package>
+</struts>
