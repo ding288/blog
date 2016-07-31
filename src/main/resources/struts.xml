@@ -23,9 +23,16 @@
 			method="logout">
 			<result name="main">main.jsp</result>
 		</action>
+		<action name="writeArticle" class="com.blog.action.ArticleAction"
+			method="write">
+			<result name="main" type="redirect">
+				main
+			</result>
+		</action>
 	</package>
-	<package name="img" extends="struts-default" namespace="img">
+	<package name="img" extends="struts-default">
 		<action name="upload" class="com.blog.action.ImgUploadAction"
-			method="upload"></action>
+			method="upload">
+		</action>
 	</package>
 </struts>

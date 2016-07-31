@@ -50,21 +50,21 @@
 		</div>
 	</div>
 	<div class="container">
-		<form action="writeArticle.do" class="">
+		<form action="writeArticle.do" method="post" id="form1">
 			<br />
 			<div class="row">
 				<label for="inputEmail3" class="col-sm-1 control-label">title</label>
 				<div class="col-sm-11">
 					<input type="text" class="form-control" id="inputEmail3"
-						placeholder="title">
+						placeholder="title" name="article.title">
 				</div>
 			</div>
 			<br />
 			<div class="row">
-				<!-- 				<textarea class="form-control" rows="3" name="content"></textarea> -->
 				<div id="summernote">Hello Summernote</div>
+				<textarea id="content" hidden="true" name="article.content"></textarea>
 			</div>
-			<input type="submit" class="btn btn-default" value="保存">
+			<input id="sub" type="button" class="btn btn-default" value="保存">
 		</form>
 	</div>
 	<footer class="blog-footer">
@@ -94,15 +94,20 @@
 					}
 				}
 			});
-
+			$("#sub").click(function() {
+				var text = $('#summernote').summernote('code');
+				$("#content").val(text);
+				alert(text);
+				$("#form1").submit();
+			});
 		});
 		function sendFile(file, el) {
 			var formData = new FormData();
-			formData.append("photo", file);
+			formData.append("img", file);
 			var fileData = URL.createObjectURL(file);
 			$(el).summernote('insertImage', fileData, function($image) {
 				$.ajax({
-					url : "img/upload",
+					url : "upload.do",
 					data : formData,
 					cache : false,
 					contentType : false,

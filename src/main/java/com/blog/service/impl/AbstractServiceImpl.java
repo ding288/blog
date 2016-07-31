@@ -3,6 +3,8 @@ package com.blog.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.blog.dao.AbstractDao;
 import com.blog.service.AbstractService;
 
@@ -48,16 +50,19 @@ public abstract class AbstractServiceImpl<T> implements AbstractService<T> {
 		return getAbstractDao().findByNativeQuery(sql);
 	}
 
+	@Transactional
 	@Override
 	public void create(T entity) {
 		getAbstractDao().create(entity);
 	}
 
+	@Transactional
 	@Override
 	public void update(T entity) {
 		getAbstractDao().update(entity);
 	}
 
+	@Transactional
 	@Override
 	public void delete(T entity) {
 		getAbstractDao().delete(entity);

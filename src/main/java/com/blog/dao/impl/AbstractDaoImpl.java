@@ -14,28 +14,28 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	private SessionFactory sessionFactory;
 
 	public T get(Integer id) {
-		return sessionFactory.openSession().get(getEntityClass(), id);
+		return sessionFactory.getCurrentSession().get(getEntityClass(), id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(getEntityClass().getSimpleName() + ".findAll");
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(getEntityClass().getSimpleName() + ".findAll");
 		return q.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> findAll(int pageNum, int pageSize) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(getEntityClass().getSimpleName() + ".findAll");
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(getEntityClass().getSimpleName() + ".findAll");
 		q.setFirstResult(pageNum).setMaxResults(pageSize);
 		return q.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByMap(String queryName, Map<String, Object> params) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(queryName);
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(queryName);
 		for (String param : params.keySet()) {
 			q.setParameter(param, params.get(param));
 		}
@@ -44,8 +44,8 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByMap(String queryName, Map<String, Object> params, int pageNum, int pageSize) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(queryName);
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(queryName);
 		for (String param : params.keySet()) {
 			q.setParameter(param, params.get(param));
 		}
@@ -55,8 +55,8 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
 	@SuppressWarnings("unchecked")
 	public T findSingleResultByMap(String queryName, Map<String, Object> params) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(queryName);
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(queryName);
 		for (String param : params.keySet()) {
 			q.setParameter(param, params.get(param));
 		}
@@ -66,16 +66,16 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T findSingleResultByOneParam(String queryName, String paramName, Object paramValue) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(queryName);
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(queryName);
 		q.setParameter(paramName, paramValue);
-		List<T> l=q.list();
+		List<T> l = q.list();
 		return l.isEmpty() ? null : (T) l.get(0);
 	}
 
 	public Object findSingleValueByMap(String queryName, Map<String, Object> params) {
-		Session session=sessionFactory.openSession();
-		Query q=session.getNamedQuery(queryName);
+		Session session = sessionFactory.getCurrentSession();
+		Query q = session.getNamedQuery(queryName);
 		for (String param : params.keySet()) {
 			q.setParameter(param, params.get(param));
 		}
@@ -84,26 +84,24 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByNativeQuery(String sql) {
-		Session session=sessionFactory.openSession();
+		Session session = sessionFactory.getCurrentSession();
 		SQLQuery q = session.createSQLQuery(sql);
 		q.addEntity(getEntityClass());
 		return q.list();
 	}
 
 	public void create(T entity) {
-		Session session=sessionFactory.openSession();
-		session.persist(entity);
+		sessionFactory.getCurrentSession().persist(entity);
 	}
 
 	public void update(Object entity) {
-		Session session=sessionFactory.openSession();
-		entity=session.merge(entity);
+		Session session = sessionFactory.getCurrentSession();
+		entity = session.merge(entity);
 		session.persist(entity);
 	}
 
 	public void delete(T entity) {
-		Session session=sessionFactory.openSession();
-		session.delete(entity);
+		sessionFactory.getCurrentSession().delete(entity);
 	}
 
 	public abstract Class<T> getEntityClass();
