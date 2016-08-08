@@ -97,7 +97,6 @@
 			$("#sub").click(function() {
 				var text = $('#summernote').summernote('code');
 				$("#content").val(text);
-				alert(text);
 				$("#form1").submit();
 			});
 		});
